@@ -1,0 +1,67 @@
+.edit{
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    &__title {
+        position: flex-start;
+        font-size: 25px;
+        font-weight: 400;
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+    &__info-container{
+        display: flex;
+        flex-direction: column;
+        margin-left: 35%;
+        .info {
+            display: flex;
+            flex-direction: row;
+            margin-top: 10px;
+            align-items: center;
+            &__title {
+                width: 80px;
+            }
+            &__content {
+                width: 180px;
+                margin-right: 20px;
+                word-wrap: break-word;
+            }
+            &__text-input{
+                width: 180px;
+                margin-right: 20px;
+            }
+            &__gender-radio-container {
+                width: 180px;
+                margin-right: 20px;
+                .radio {
+                    margin-right: 5px;
+                    margin-bottom: 0;
+                }
+            }
+            &__privacy-radio-container {
+                margin-top: 10px;
+                .radio {
+                    margin-right: 15px;
+                    margin-bottom: 0;
+                }
+            }
+            &__error {
+                color: red;
+                margin-left: 20px;
+            }
+            
+        }
+    }
+    &__btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 20px;
+        .btn {
+            margin-left: 10px;
+        }
+    }
+}

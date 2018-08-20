@@ -1,0 +1,51 @@
+<div class="signup-container text-center">
+  <form class="form-signup">
+    <h3 class="font-weight-bold">Create your account</h3>
+    <div class="form-signup__input-fields">
+      <input type="text" class="form-control form-signup__type-input" placeholder="Name" [(ngModel)]="name" name="name">
+      <div class="signup-error-container">
+        <div class="error">{{nameError}}</div>
+      </div>
+      <div class="form-signup__gender-check-container">
+        <label class="form-signup__radio" *ngFor="let gen of genders">
+          <input type="radio" name="gender-radio" [value]="gen" [(ngModel)]="gender">{{gen}}
+        </label>
+      </div>
+      <div class="form-signup__birthday-container">
+        <span class="form-signup__birthday-text">Birthday</span>
+        <div class="form-signup__birthday-select">
+          <select name="birth-day" id="birth-day" [(ngModel)]="birthDay">
+            <option value="0">Day</option>
+            <option *ngFor="let day of days" [value]="day">{{day}}</option>
+          </select>
+          <select name="birth-month" id="birth-month" [(ngModel)]="birthMonth">
+            <option value="0">Month</option>
+            <option *ngFor="let month of months" [value]="month">{{month}}</option>
+          </select>
+          <select name="birth-year" id="birth-year" [(ngModel)]="birthYear">
+            <option value="0">Year</option>
+            <option *ngFor="let year of years" [value]="year">{{year}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="signup-error-container">
+        <div class="error">{{dateError}}</div>
+      </div>
+      <input type="email" class="form-control form-signup__type-input" placeholder="Email" [(ngModel)]="email" name="email">
+      <div class="signup-error-container">
+        <div class="error">{{emailError}}</div>
+      </div>
+      <input type="password" class="form-control form-signup__type-input" placeholder="Password" [(ngModel)]="password" name="password">
+      <div class="signup-error-container">
+        <div class="error">{{passwordError}}</div>
+      </div>
+      <div class="form-signup__policy-checkbox">
+        <input type="checkbox" [checked]="policyChecked" (change)="policyChecked = !policyChecked">I agree to this Privacy Policy.
+      </div>
+      <div class="signup-error-container justify-content-center">
+        <div class="error">{{policyError}}</div>
+      </div>
+    </div>
+    <button class="form-signup__signup-btn btn btn-lg btn-primary" [disabled]="isSigningUp" type="submit" (click)="signUp()">Sign up</button>
+  </form>
+</div>

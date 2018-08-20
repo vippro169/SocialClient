@@ -1,0 +1,62 @@
+<div class="edit">
+  <div class="edit__title">Edit profile</div>
+  <div class="edit__info-container">
+    <div class="info">
+      <div class="info__title">Name</div>
+      <div *ngIf="!isEditing" class="info__content">{{userInfo.name}}</div>
+      <input *ngIf="isEditing" type="text" class="info__text-input form-control" [(ngModel)]="name" name="name">
+      <div class="info__privacy">Public</div>
+      <div *ngIf="isEditing && nameError" class="info__error">{{nameError}}</div>
+    </div>
+    <div class="info">
+      <div class="info__title">Gender</div>
+      <div *ngIf="!isEditing" class="info__content">{{userInfo.gender}}</div>
+      <div *ngIf="isEditing" class="info__gender-radio-container">
+        <label class="radio" *ngFor="let gen of genders">
+          <input type="radio" name="gender-radio" [value]="gen" [(ngModel)]="gender">{{gen}}
+        </label>
+      </div>
+      <div class="info__privacy">Public</div>
+    </div>
+    <div class="info">
+      <div class="info__title">Birthday</div>
+      <div *ngIf="!isEditing" class="info__content">{{userInfo.birthday | date: 'MMMM d, yyyy'}}</div>
+      <div *ngIf="!isEditing" class="info__privacy">{{userInfo.birthDatePrivacy}}</div>
+      <div *ngIf="isEditing" class="info__date-input">
+        <select name="birth-day" id="birth-day" [(ngModel)]="birthDay">
+          <option value="0">Day</option>
+          <option *ngFor="let day of days" [value]="day">{{day}}</option>
+        </select>
+        <select name="birth-month" id="birth-month" [(ngModel)]="birthMonth">
+          <option value="0">Month</option>
+          <option *ngFor="let month of months" [value]="month">{{month}}</option>
+        </select>
+        <select name="birth-year" id="birth-year" [(ngModel)]="birthYear">
+          <option value="0">Year</option>
+          <option *ngFor="let year of years" [value]="year">{{year}}</option>
+        </select>
+      </div>
+      <div *ngIf="isEditing && dateError" class="info__error">{{dateError}}</div>
+    </div>
+    <div *ngIf="isEditing" class="info__privacy-radio-container">
+      <label class="radio" *ngFor="let pri of privacy">
+        <input type="radio" name="date-privacy-radio" [value]="pri" [(ngModel)]="birthDatePrivacy">{{pri}}
+      </label>
+    </div>
+    <div class="info">
+      <div class="info__title">Email</div>
+      <div class="info__content">{{userInfo.email}}</div>
+      <div *ngIf="!isEditing" class="info__privacy">{{userInfo.emailPrivacy}}</div>
+    </div>
+    <div *ngIf="isEditing" class="info__privacy-radio-container">
+      <label class="radio" *ngFor="let pri of privacy">
+        <input type="radio" name="email-privacy-radio" [value]="pri" [(ngModel)]="emailPrivacy">{{pri}}
+      </label>
+    </div>
+  </div>
+  <div class="edit__btn-container">
+    <button *ngIf="!isEditing" class="btn btn-outline-dark" (click)="edit()">Edit</button>
+    <button *ngIf="isEditing" [disabled]="isSaving" class="btn btn-primary" (click)="save()">Save</button>
+    <button *ngIf="isEditing" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+  </div>
+</div>

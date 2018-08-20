@@ -1,0 +1,32 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 25%;
+    width: 50%;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 150px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    &__user-name {
+        font-size: 50px;
+        font-weight: 500;
+        margin-left: 20px;
+        margin-bottom: 10px;
+    }
+    &__btn-container {
+        margin-right: 20px;
+        margin-bottom: 15px;
+        .btn {
+            margin-right: 10px;
+        }
+    }
+}
