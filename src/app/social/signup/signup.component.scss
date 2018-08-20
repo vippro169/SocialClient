@@ -1,0 +1,62 @@
+.signup-container {
+    margin-left: 25%;
+    width: 50%;
+    height: 100%;
+    padding-top: 30px;
+    .form-signup {
+        &__input-fields {
+            display: flex;
+            flex-direction: column;
+            margin-top: 30px;
+        }
+        &__type-input {
+            width: 400px;
+            margin: 5px auto;
+        }
+        &__gender-check-container {
+            display: flex;
+            align-items: center;
+            width: 400px;
+            margin: 5px auto;
+        }
+        &__radio {
+            cursor: pointer;
+            padding-right: 20px;
+            margin-bottom: 0;
+        }
+        &__birthday-container {
+            display: flex;
+            flex-direction: column;
+            width: 400px;
+            margin: 5px auto;
+        }
+        &__birthday-text {
+            align-self: flex-start;
+        }
+        &__birthday-select {
+            align-self: flex-start;
+            margin-top: 5px
+        }
+        &__policy-checkbox {
+            margin-bottom: 5px;
+        }
+        &__signup-btn {
+            margin-top: 10px;
+        }
+    }
+}
+
+.signup-error-container {
+    display: flex;
+    align-items: center;
+    width: 400px;
+    height: 10px;
+    margin: 5px auto;
+}
+
+.error {
+    display: flex;
+    font-size: 15px;
+    color: red;
+    padding-right: 10px;
+}

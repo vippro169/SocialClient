@@ -1,0 +1,33 @@
+<div class="header">
+  <div class="menu align-items-center">
+    <div class="menu__web-title">
+      <a routerLink="" class="menu__home-link">Social</a>
+    </div>
+    <div *ngIf="!isAuthenticated" class="menu__form">
+      <div class="form-signin">
+        <div class="form-signin__email">
+          <span>Email</span>
+          <input type="email" class="form-control" [(ngModel)]="email" name="email">
+        </div>
+        <div class="form-signin__password">
+          <span>Password</span>
+          <input type="password" class="form-control" [(ngModel)]="password" name="password">
+        </div>
+        <button class="form-signin__signin-btn" type="submit" (click)="signIn()">Sign in</button>
+      </div>
+      <div class="form-signin__error-container">
+        <div class="error-list" *ngIf="validationErrors.length>0">
+          <p class="form-signin__error" *ngFor="let error of validationErrors">{{ error }}</p>
+        </div>
+        <p class="form-signin__error" *ngIf="invalidSignin">*Wrong Username or Password!</p>
+      </div>
+    </div>
+    <div *ngIf="isAuthenticated" class="features">
+      <button class="features__btn btn btn-dark" (click)="routeProfile()">{{userName}}</button>
+      <button class="features__btn btn btn-dark">Friend requests</button>
+      <button class="features__btn btn btn-dark">Settings</button>
+      <button class="features__btn btn btn-dark" (click)="signOut()">Sign out</button>
+      <button class="features__btn btn btn-dark">?</button>
+    </div>
+  </div>
+</div>
