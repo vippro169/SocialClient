@@ -6,12 +6,18 @@ import { ProfileComponent } from './social/profile/profile.component';
 import { TimelineComponent } from './social/timeline/timeline.component';
 import { ProfileEditComponent } from './social/profile-edit/profile-edit.component';
 import { FriendsComponent } from './social/friends/friends.component';
+import { HomeComponent } from './social/home/home.component';
+import { SettingsComponent } from './social/settings/settings.component';
+import { PrivacyPolicyComponent } from './social/privacy-policy/privacy-policy.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: 'profile', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'signup', component: SignUpComponent },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   {
-    path: 'profile/:id', component: ProfileComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
+    path: 'profile/:path', component: ProfileComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
     children: [
       { path: '', redirectTo: 'timeline', pathMatch: 'full' },
       { path: 'timeline', component: TimelineComponent },

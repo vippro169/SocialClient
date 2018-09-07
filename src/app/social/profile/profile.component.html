@@ -1,11 +1,29 @@
 <div class="profile-container">
-  <div class="profile-header">
+  <div *ngIf="!profileName" class="no-user align-self-center">No user match this link</div>
+  <div *ngIf="profileName" class="profile-header">
     <div class="profile-header__user-name">{{profileName}}</div>
     <div class="profile-header__btn-container">
-      <button *ngIf="profileId == userId" class="btn btn-outline-dark" routerLink="timeline">Timeline</button>
-      <button *ngIf="profileId == userId" class="btn btn-outline-dark" routerLink="friends">Friends</button>
-      <button *ngIf="profileId == userId" class="btn btn-outline-dark" routerLink="edit">Edit profile</button>
+      <button *ngIf="profilePath == authUser.userPath" class="btn btn-outline-dark" routerLink="timeline">Timeline</button>
+      <button *ngIf="profilePath == authUser.userPath" class="btn btn-outline-dark" routerLink="friends">Friends</button>
+      <button *ngIf="profilePath == authUser.userPath" class="btn btn-outline-dark" routerLink="edit">Edit profile</button>
+      <button *ngIf="profilePath != authUser.userPath && !isFriend && !friendRequest" class="btn btn-outline-dark" (click)="addFriend()">
+        Add friend
+      </button>
+      <button *ngIf="profilePath != authUser.userPath && isFriend" class="btn btn-outline-dark" (click)="unfriend()">
+        Unfriend
+      </button>
+      <div *ngIf="profilePath != authUser.userPath && friendRequest">
+        <button *ngIf="friendRequest.senderId == authUser.userId" class="btn btn-outline-dark" (click)="cancelFriendRequest()">
+          Cancel friend request
+        </button>
+        <button *ngIf="friendRequest.receiverId == authUser.userId" class="btn btn-outline-dark" (click)="acceptFriendRequest()">
+          Accept friend request
+        </button>
+        <button *ngIf="friendRequest.receiverId == authUser.userId" class="btn btn-outline-dark" (click)="denyFriendRequest()">
+          Deny friend request
+        </button>
+      </div>
     </div>
   </div>
-  <router-outlet></router-outlet>
+  <router-outlet *ngIf="profileName"></router-outlet>
 </div>

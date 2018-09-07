@@ -1,0 +1,44 @@
+.friends {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-top: 10px;
+    &__count {
+        margin-left: 10px;
+        margin-top: 10px;
+        font-size: 20px;
+    }
+    &__no-friend-msg {
+        color: aqua;
+        margin-top: 40px;
+        font-size: 30px;
+        align-self: center;
+    }
+    &__friends-container {
+        display: flex;
+        width: 80%;
+        margin: 10px 10%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    &__friend {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100px;
+        width: calc(50% - 5px);
+        margin-bottom: 10px;
+        border: 1px solid lightgray;
+    }
+    &__name {
+        margin-left: 20px;
+        padding-right: 10px;
+    }
+    &__btn {
+        height: 30px;
+        margin-right: 20px;
+    }
+}

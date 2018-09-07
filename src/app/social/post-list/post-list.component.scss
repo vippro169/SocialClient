@@ -1,0 +1,49 @@
+.post-list-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+    .post-creator {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 250px;
+        align-items: center;
+        background-color: white;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        &__input {
+            width: calc(100% - 30px);
+            margin: 10px 15px;
+            min-height: 125px;
+            word-wrap: break-word;
+            overflow: hidden;
+            resize: none;
+        }
+        &__radio-container {
+            width: calc(100% - 30px);
+            margin: 10px 15px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+        }
+        &__radio {
+            margin-left: 15px;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+        &__btn {
+            width: calc(100% - 30px);
+            margin: 10px 15px;
+        }
+    }
+    .no-post-msg {
+        margin-top: 20px;
+        font-size: 25px;
+        font-weight: bold;
+        color: aqua;
+    }
+    .post-container {
+        width: 100%;
+    }
+}

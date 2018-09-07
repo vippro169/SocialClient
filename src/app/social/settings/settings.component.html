@@ -1,0 +1,42 @@
+<div class="settings">
+  <div class="settings__title">Account settings</div>
+  <div *ngIf="!isChangingPassword" class="settings__change-password-btn btn btn-outline-dark" (click)="changePassword()">
+    Change password
+  </div>
+  <div *ngIf="successMsg" class="settings__success-msg">{{successMsg}}</div>
+  <div *ngIf="isChangingPassword" class="settings__change-password-container">
+    <div class="title">Change password</div>
+    <div class="form-container">
+      <div class="input-container">
+        <div>Current password</div>
+        <input type="password" [(ngModel)]="password" name="current-password">
+      </div>
+      <div *ngIf="error" class="error-msg">*{{error}}</div>
+      <div class="input-container">
+        <div>New password</div>
+        <input type="password" [(ngModel)]="newPassword" name="new-password">
+      </div>
+    </div>
+    <div class="btn-container">
+      <button class="btn btn-sm btn-primary" [disabled]="!password || !newPassword" (click)="savePassword()">Save</button>
+      <button class="btn btn-sm btn-outline-dark" (click)="cancelChangingPassword()">Cancel</button>
+    </div>
+  </div>
+  <div *ngIf="!isDeletingAccount" class="settings__delete-account-btn btn btn-outline-dark" (click)="isDeletingAccount = !isDeletingAccount">Delete
+    account
+  </div>
+  <div *ngIf="isDeletingAccount" class="settings__delete-account-container">
+    <div class="title">Delete account</div>
+    <div class="warning">
+      <span>After you delete your account, every information related to your account will be deleted includes your basic
+        information, friendship, posts, and comments.</span>
+      <span>If you use this email again to create a new account, the account will be treated as a new account.</span>
+      <span>Upon successful delete, you will be automatically redirected to Sign up page!</span>
+      <span>Are you sure to delete your account?</span>
+    </div>
+    <div class="btn-container">
+        <button class="btn btn-dark" (click)="deleteAccount()">Yes</button>
+        <button class="btn btn-outline-dark" (click)="isDeletingAccount = !isDeletingAccount">Cancel</button>
+      </div>
+  </div>
+</div>

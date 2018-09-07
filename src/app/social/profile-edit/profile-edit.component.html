@@ -21,7 +21,7 @@
     <div class="info">
       <div class="info__title">Birthday</div>
       <div *ngIf="!isEditing" class="info__content">{{userInfo.birthday | date: 'MMMM d, yyyy'}}</div>
-      <div *ngIf="!isEditing" class="info__privacy">{{userInfo.birthDatePrivacy}}</div>
+      <div *ngIf="!isEditing" class="info__privacy">{{userInfo.birthdayPrivacy}}</div>
       <div *ngIf="isEditing" class="info__date-input">
         <select name="birth-day" id="birth-day" [(ngModel)]="birthDay">
           <option value="0">Day</option>
@@ -40,7 +40,7 @@
     </div>
     <div *ngIf="isEditing" class="info__privacy-radio-container">
       <label class="radio" *ngFor="let pri of privacy">
-        <input type="radio" name="date-privacy-radio" [value]="pri" [(ngModel)]="birthDatePrivacy">{{pri}}
+        <input type="radio" name="date-privacy-radio" [value]="pri" [(ngModel)]="birthdayPrivacy">{{pri}}
       </label>
     </div>
     <div class="info">

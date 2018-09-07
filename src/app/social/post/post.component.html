@@ -1,3 +1,39 @@
-<p>
-  posts works!
-</p>
+<div class="post">
+  <div class="post__header">
+    <div class="post__name-container">
+      <a class="name" href="/profile/{{userPath}}">{{userName}}</a>
+      <div class="time">
+        {{ post.createdDate | date:'MMM d, y, H:mm' }} - {{post.privacy}}
+      </div>
+    </div>
+    <div *ngIf="authId == post.userId" class="dropdown" class="post__options" >
+      <div class="dropdown-toggle" data-toggle="dropdown"></div>
+      <div class="dropdown-menu">
+        <div class="dropdown-item" (click)="edit()">Edit</div>
+        <div class="dropdown-item" (click)="delete()">Delete</div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isEditing" class="post__content-container">
+    <div class="post__content">{{post.content}}</div>
+  </div>
+  <div *ngIf="isEditing" class="post__edit">
+    <textarea autosize class="post__input" [(ngModel)]="editContent"></textarea>
+    <div class="post__radio-container">
+      <div>Who can see this?</div>
+      <label class="post__radio" *ngFor="let pri of privacy">
+        <input type="radio" name="privacy" [value]="pri" [(ngModel)]="editPrivacy">{{pri}}
+      </label>
+    </div>
+    <div class="post__btn-container">
+      <button [disabled]="!editContent" class="btn btn-primary" (click)="save()">Save</button>
+      <button class="btn btn-outline-primary" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="post__comments">
+    <textarea autosize class="post__comment-input" (keydown.enter)="createComment();false" 
+    placeholder=" Write your comment..." [(ngModel)]="commentContent"></textarea>
+    <app-comment *ngFor="let comment of comments" [comment]="comment" [authId]="authId" (commentChanged)="getComments($event)"></app-comment>
+  </div>
+</div>

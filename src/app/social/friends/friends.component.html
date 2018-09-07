@@ -1,3 +1,10 @@
-<p>
-  friends works!
-</p>
+<div class="friends">
+  <div class="friends__count">Friends {{friends.length}}</div>
+  <div class="friends__no-friend-msg" *ngIf="friends.length == 0">You have no friend.</div>
+  <div class="friends__friends-container">
+    <div class="friends__friend" *ngFor="let friend of friends">
+      <a class="friends__name" href="/profile/{{friend.path}}">{{friend.name}}</a>
+      <button class="friends__btn btn btn-sm btn-outline-dark" (click)="unfriend(friend.id)">Unfriend</button>
+    </div>
+  </div>
+</div>

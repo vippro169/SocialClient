@@ -14,7 +14,7 @@
         &__web-title {
             font-size: 55px;
         }
-        &__home-link{
+        &__home-link {
             color: white;
             text-decoration: none;
         }
@@ -70,7 +70,18 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    &__btn{
+    &__btn {
         margin-right: 10px;
+    }
+    &__friend-request {
+        margin: 5px 0;
+        .request__name {
+            width: 60px;
+            display: inline-flex;
+            margin-right: 15px;
+        }
+        .request__btn {
+            margin-right: 5px;
+        }
     }
 }

@@ -32,13 +32,17 @@ export class SignUpComponent implements OnInit {
   public birthYear: number;
   public email: string;
   public password: string;
+  public path: string;
   public policyChecked: boolean = false;
 
   public nameError: string;
   public dateError: string;
   public emailError: string;
   public passwordError: string;
+  public pathError: string;
   public policyError: string;
+  public error: string;
+  
 
   ngOnInit() {
     this.yearMax = Number(formatDate(Date.now(), 'yyyy', 'en-US', '+7'));
@@ -64,9 +68,9 @@ export class SignUpComponent implements OnInit {
     if (this._isSignUpValid()) {
       this.isSigningUp = true;
       var birthday = new Date(+this.birthYear, +this.birthMonth-1, +this.birthDay+1);
-      this._authService.signUp(this.name, this.gender, birthday, this.email, this.password)
+      this._authService.signUp(this.name, this.gender, birthday, this.email, this.password, this.path)
         .subscribe(res => {
-          if (res != null) this.emailError = <string>res;
+          if (res != null) this.error = <string>res;
           this.isSigningUp = false;
         }, error => {
           this._errorMsgService.sendErrorMsg(error.error.message);
@@ -101,6 +105,15 @@ export class SignUpComponent implements OnInit {
       this.passwordError = "*Password is required!";
     }
 
+    if (this._tools.isNullOrEmpty(this.path)) {
+      isValid = false;
+      this.pathError = "*Path is required!";
+    }
+    else if (!this._tools.isValidPath(this.path)) {
+      isValid = false;
+      this.pathError = "*Path must not contain white space and special characters!"
+    };
+
     if (!this.policyChecked) {
       isValid = false;
       this.policyError = "*You have to agree with the Privacy Policy!"
@@ -113,7 +126,9 @@ export class SignUpComponent implements OnInit {
     this.dateError = null;
     this.emailError = null;
     this.passwordError = null;
+    this.pathError = null;
     this.policyError = null;
+    this.error = null;
   }
 }
 

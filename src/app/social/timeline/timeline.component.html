@@ -16,4 +16,5 @@
       </tr>
     </table>
   </div>
+  <app-post-list *ngIf="userInfo.id != null" [isHome]="false" [userId]="userInfo.id"></app-post-list>
 </div>

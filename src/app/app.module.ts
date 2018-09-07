@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
@@ -19,7 +20,16 @@ import { TimelineComponent } from './social/timeline/timeline.component';
 import { PostComponent } from './social/post/post.component';
 import { FriendsComponent } from './social/friends/friends.component';
 import { ProfileEditComponent } from './social/profile-edit/profile-edit.component';
-import { UserHttpService } from './social/services/user.http-service';
+import { UserHttpService } from './social/services/http-service/user.http-service';
+import { PostListComponent } from './social/post-list/post-list.component';
+import { AutosizeDirective } from './shared/services/autosize.directive';
+import { CommentComponent } from './social/comment/comment.component';
+import { PostHttpService } from './social/services/http-service/post.http-service';
+import { FriendHttpService } from './social/services/http-service/friend.http-service';
+import { CommentHttpService } from './social/services/http-service/comment.http-service';
+import { HomeComponent } from './social/home/home.component';
+import { SettingsComponent } from './social/settings/settings.component';
+import { PrivacyPolicyComponent } from './social/privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -32,11 +42,18 @@ import { UserHttpService } from './social/services/user.http-service';
     TimelineComponent,
     PostComponent,
     FriendsComponent,
-    ProfileEditComponent
+    ProfileEditComponent,
+    PostListComponent,
+    AutosizeDirective,
+    CommentComponent,
+    HomeComponent,
+    SettingsComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    NgbModule,
     ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
@@ -60,7 +77,12 @@ import { UserHttpService } from './social/services/user.http-service';
     AuthGuard,
     ErrorMessageService,
     ToolsService,
-    UserHttpService
+
+    UserHttpService,
+    FriendHttpService,
+    PostHttpService,
+    CommentHttpService
+
   ],
   bootstrap: [AppComponent]
 })

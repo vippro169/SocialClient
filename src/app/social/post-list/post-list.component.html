@@ -1,0 +1,14 @@
+<div class="post-list-container">
+  <div *ngIf="userId == authUser.userId" class="post-creator">
+    <textarea autosize class="post-creator__input" placeholder=" Write a post" [(ngModel)]="postContent"></textarea>
+    <div class="post-creator__radio-container">
+      <div>Who can see this?</div>
+      <label class="post-creator__radio" *ngFor="let pri of privacy">
+        <input type="radio" name="privacy-radio" [value]="pri" [(ngModel)]="postPrivacy">{{pri}}
+      </label>
+    </div>
+    <button [disabled]="!postContent" class="post-creator__btn btn btn-primary" (click)="post()">Post</button>
+  </div>
+  <div *ngIf="posts.length == 0" class="no-post-msg text-center">No post to show</div>
+  <app-post class="post-container" *ngFor="let post of posts" [post]="post" [authId]="authUser.userId" (postChanged)="getPosts($event)"></app-post>
+</div>

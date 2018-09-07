@@ -16,7 +16,9 @@ export class GlobalAlertComponent implements OnInit, OnDestroy {
   public subscription: Subscription;
 
   ngOnInit() {
-    this.subscription = this._errorMsgService.getErrorMsg().subscribe();
+    this.subscription = this._errorMsgService.getErrorMsg().subscribe(err => {
+      this.errorMsg = err;
+    });
   }
 
   public close() {

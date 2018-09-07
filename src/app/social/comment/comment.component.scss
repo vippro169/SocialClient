@@ -1,0 +1,31 @@
+.comment {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &__content-container {
+        display: flex;
+        background-color: lightcyan;
+        max-width: 90%;
+        border: 10px solid lightcyan;
+        border-radius: 5px;
+    }
+    &__name{
+        float: left;
+        margin-right: 5px;
+    }
+    &__content{
+        display: inline;
+        word-wrap: break-word;
+    }
+    &__input{
+        width: 85%;
+        margin-right: 10px;
+        word-wrap: break-word;
+        overflow: hidden;
+        resize: none;
+    }
+    &__options{
+        margin: 0 5px;
+    }
+}

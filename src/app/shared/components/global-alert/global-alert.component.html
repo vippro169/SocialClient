@@ -1,5 +1,5 @@
 <div *ngIf="errorMsg" class="app-alert alert alert-success">
-    <div *ngIf="errorMsg" class="app-alert__content">{{errorMsg.text}}</div>
+    <div *ngIf="errorMsg" class="app-alert__content">Error: {{errorMsg.text}}</div>
     <button type="button" class="close app-alert__btn" data-dismiss="alert" aria-label="Close" (click)="close()">
         <span class="app-alert__btn-close-icon">&times;</span>
     </button>

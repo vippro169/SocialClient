@@ -5,6 +5,7 @@
     background-color: white;
     border: 1px solid lightgray;
     border-radius: 5px;
+    margin-top: 10px;
     &__title {
         position: flex-start;
         font-size: 25px;
@@ -29,6 +30,9 @@
                 margin-right: 20px;
                 word-wrap: break-word;
             }
+            &__privacy {
+                margin-right: 20px;
+            }
             &__text-input{
                 width: 180px;
                 margin-right: 20px;
@@ -50,7 +54,8 @@
             }
             &__error {
                 color: red;
-                margin-left: 20px;
+                word-wrap: break-word;
+                max-width: 250px; 
             }
             
         }
@@ -62,6 +67,7 @@
         margin-top: 20px;
         .btn {
             margin-left: 10px;
+            width: 70px;
         }
     }
 }

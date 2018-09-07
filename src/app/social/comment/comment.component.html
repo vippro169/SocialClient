@@ -1,0 +1,17 @@
+<div class="comment">
+  <div *ngIf="!isEditing" class="comment__content-container">
+    <a class="comment__name" href="/profile/{{userPath}}">{{userName}}</a>
+    <div class="comment__content">{{comment.content}}</div>
+  </div>
+  <div *ngIf="!isEditing" class="comment__options">
+      <div *ngIf="authId == comment.userId" class="dropdown">
+        <div class="dropdown-toggle" data-toggle="dropdown"></div>
+        <div class="dropdown-menu">
+          <div class="dropdown-item" (click)="edit()">Edit</div>
+          <div class="dropdown-item" (click)="delete()">Delete</div>
+        </div>
+      </div>
+    </div>
+  <textarea autosize *ngIf="isEditing" class="comment__input" (keydown.enter)="save();false" [(ngModel)]="editComment"></textarea>
+  <button *ngIf="isEditing" class="comment__cancel-btn btn btn-sm btn-outline-dark" (click)="cancel()">Cancel</button>
+</div>

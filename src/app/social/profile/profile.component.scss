@@ -15,7 +15,6 @@
     border-radius: 5px;
     align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 10px;
     &__user-name {
         font-size: 50px;
         font-weight: 500;
@@ -29,4 +28,9 @@
             margin-right: 10px;
         }
     }
+}
+
+.no-user {
+    font-size: 30px;
+    margin-top: 40px;
 }

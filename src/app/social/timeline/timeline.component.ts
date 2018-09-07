@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserHttpService } from '../services/user.http-service';
-import { UserModel } from '../../models/user';
-import { pipe } from '../../../../node_modules/@angular/core/src/render3/pipe';
+import { UserModel } from '../../models/user.model';
 import { ActivatedRoute } from '../../../../node_modules/@angular/router';
 import { Subscription } from '../../../../node_modules/rxjs';
 import { ErrorMessageService } from '../../shared/services/error-msg.service';
-import { formatDate } from '../../../../node_modules/@angular/common';
+import { UserHttpService } from '../services/http-service/user.http-service';
 
 @Component({
   selector: 'app-timeline',
@@ -22,18 +20,19 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   private _routeSub: Subscription;
 
-  public profileId: string;
+  public profilePath: string;
   private userInfo: UserModel = new UserModel();
 
   ngOnInit() {
     this._routeSub = this._route.parent.params.subscribe(params => {
-      this.profileId = params['id'];
+      this.profilePath = params['path'];
+      this.profilePath = this.profilePath.toLowerCase();
       this._getBasicInfo();
     });
   }
 
   private _getBasicInfo() {
-    this._userHttpService.getUserInfo(this.profileId).subscribe(res => {
+    this._userHttpService.getUserInfo(this.profilePath).subscribe(res => {
       this.userInfo = res;
     }, error => {
       this._errorMsgService.sendErrorMsg(error.error.message);

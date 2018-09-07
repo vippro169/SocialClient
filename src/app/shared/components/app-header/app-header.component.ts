@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { ErrorMessageService } from '../../services/error-msg.service';
 import { ToolsService } from '../../services/tools.service';
-import { AuthGuard } from '../../../auth/auth-guard.service';
+import { AuthGuard, AuthUserInfo } from '../../../auth/auth-guard.service';
 import { Router, NavigationEnd } from '../../../../../node_modules/@angular/router';
-import { UserHttpService } from '../../../social/services/user.http-service';
+import { UserHttpService } from 'src/app/social/services/http-service/user.http-service';
+import { FriendHttpService } from '../../../social/services/http-service/friend.http-service';
+import { FriendRequestModel } from '../../../models/friendrequest.model';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +21,8 @@ export class AppHeaderComponent implements OnInit {
     private _errorMsgService: ErrorMessageService,
     private _tools: ToolsService,
     private _router: Router,
-    private _userHttpService: UserHttpService
+    private _userHttpService: UserHttpService,
+    private _friendHttpService: FriendHttpService
   ) {
     _router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -29,11 +32,10 @@ export class AppHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._userHttpService.getUserName(this.userId).subscribe(res => {
-      this.userName = res;
-    }, error => {
-      this._errorMsgService.sendErrorMsg(error.error.message);
-    });
+    if (this.isAuthenticated) {
+      this._getUserName();
+      this._getListFriendRequest();
+    }
   }
 
   public isAuthenticated: boolean = this._authGuard.isAuthenticated();
@@ -43,9 +45,13 @@ export class AppHeaderComponent implements OnInit {
   public validationErrors: string[] = [];
   public invalidSignin: boolean;
 
-  public get userId(): string {
-    return localStorage.getItem('userId')
-  }
+  public isCollapsed = true;
+  public friendRequestsInfo: FriendRequestInfo[] = [];
+
+  public get authUser(): AuthUserInfo {
+    return this._authGuard.getAuthenticatedUser();
+  };
+
   public userName: string;
 
   public signIn() {
@@ -58,14 +64,14 @@ export class AppHeaderComponent implements OnInit {
     if (this._tools.isNullOrEmpty(this.password)) this.validationErrors.push("*Password is required!")
     if (this.validationErrors.length == 0) {
       this._authService.signIn(this.email, this.password).subscribe(res => {
-        let token = (<any>res).jwtToken;
+        var token = res;
         if (token == "Unauthorized") this.invalidSignin = true;
         else {
           localStorage.setItem("jwtToken", token);
-          let userId = (<any>res).id;
-          localStorage.setItem("userId", userId);
           this.isAuthenticated = true;
-          this._router.navigateByUrl("profile/" + userId);
+          this._getUserName();
+          this._setNullInput();
+          this._router.navigateByUrl("profile/" + this.authUser.userPath);
         }
       }, error => {
         this._errorMsgService.sendErrorMsg(error.error.message);
@@ -76,10 +82,76 @@ export class AppHeaderComponent implements OnInit {
   public signOut() {
     this._authService.signOut();
     this.isAuthenticated = false;
+    this.userName = null;
     this._router.navigateByUrl('signup');
   }
 
   public routeProfile() {
-    this._router.navigateByUrl('profile/' + this.userId);
+    window.location.href = 'profile/' + this.authUser.userPath;
   }
+
+  public acceptFriendRequest(friendRequest: FriendRequestModel) {
+    this._confirmFriendRequest(friendRequest, true);
+  }
+
+  public denyFriendRequest(friendRequest: FriendRequestModel) {
+    this._confirmFriendRequest(friendRequest, false);
+  }
+
+  private _getUserName() {
+    this._userHttpService.getUserName(this.authUser.userPath).subscribe(res => {
+      this.userName = res;
+    }, error => {
+      this._errorMsgService.sendErrorMsg(error.error.message);
+    });
+  }
+
+  private _setNullInput() {
+    this.email = null;
+    this.password = null;
+  }
+
+  private _getListFriendRequest() {
+    this.friendRequestsInfo = [];
+    this._friendHttpService.getListFriendRequest(this.authUser.userId).subscribe(res => {
+      var friendRequests: FriendRequestModel[] = res;
+      if(friendRequests.length > 0) {
+        friendRequests.forEach(x => {
+          this._userHttpService.getUserNameById(x.senderId).subscribe(res => {
+            var name = res;
+            this._userHttpService.getUserPath(x.senderId).subscribe(res => {
+              var path = res;
+              let requestInfo: FriendRequestInfo = {
+                friendRequest: x,
+                senderName: name,
+                senderPath: path
+              }
+              this.friendRequestsInfo.push(requestInfo);
+            }, error => {
+              this._errorMsgService.sendErrorMsg(error.error.message);
+            });
+          }, error => {
+            this._errorMsgService.sendErrorMsg(error.error.message);
+          });
+        })
+      }
+    }, error => {
+      this._errorMsgService.sendErrorMsg(error.error.message);
+    });
+  }
+
+  private _confirmFriendRequest(friendRequest: FriendRequestModel, confirmed: boolean) {
+    friendRequest.confirmed = confirmed;
+    this._friendHttpService.confirmFriendRequest(friendRequest).subscribe(res => {
+      this._getListFriendRequest();
+    }, error => {
+      this._errorMsgService.sendErrorMsg(error.error.message);
+    });
+  }
+}
+
+export interface FriendRequestInfo {
+  friendRequest: FriendRequestModel;
+  senderName: string;
+  senderPath: string;
 }

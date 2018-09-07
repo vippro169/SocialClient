@@ -1,7 +1,7 @@
 <div class="header">
   <div class="menu align-items-center">
     <div class="menu__web-title">
-      <a routerLink="" class="menu__home-link">Social</a>
+      <a href="/home" class="menu__home-link" title="Home">Social</a>
     </div>
     <div *ngIf="!isAuthenticated" class="menu__form">
       <div class="form-signin">
@@ -24,10 +24,34 @@
     </div>
     <div *ngIf="isAuthenticated" class="features">
       <button class="features__btn btn btn-dark" (click)="routeProfile()">{{userName}}</button>
-      <button class="features__btn btn btn-dark">Friend requests</button>
-      <button class="features__btn btn btn-dark">Settings</button>
+      <div class="dropdown">
+        <button class="features__btn btn btn-dark dropdown-toggle" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+          aria-controls="friendrequest-dropdown">
+          Friend requests {{friendRequestsInfo.length > 0 ? friendRequestsInfo.length: ""}}
+        </button>
+        <div class="dropdown-menu" id="friendrequest-dropdown" [ngbCollapse]="isCollapsed">
+          <div class="no-friendrequest-msg text-center" *ngIf="friendRequestsInfo.length == 0">No friend requests</div>
+          <div class="features__friend-request dropdown-item" *ngFor="let request of friendRequestsInfo">
+            <div class="request__name">
+              <a href="/profile/{{request.senderPath}}">{{request.senderName}}</a>
+            </div>
+            <button class="request__btn btn btn-sm btn-primary" (click)="acceptFriendRequest(request.friendRequest)">
+              Accept
+            </button>
+            <button class="request__btn btn btn-sm btn-outline-primary" (click)="denyFriendRequest(request.friendRequest)">
+              Deny
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="features__btn btn btn-dark" routerLink="/settings">Settings</button>
       <button class="features__btn btn btn-dark" (click)="signOut()">Sign out</button>
-      <button class="features__btn btn btn-dark">?</button>
+      <div class="dropdown">
+        <button  type="button" class="features__btn btn btn-dark dropdown-toggle" data-toggle="dropdown" title="Help">?</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" target="_blank" href="/privacy-policy">Privacy Policy</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
