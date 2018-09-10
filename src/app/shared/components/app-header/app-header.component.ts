@@ -7,6 +7,11 @@ import { Router, NavigationEnd } from '../../../../../node_modules/@angular/rout
 import { UserHttpService } from 'src/app/social/services/http-service/user.http-service';
 import { FriendHttpService } from '../../../social/services/http-service/friend.http-service';
 import { FriendRequestModel } from '../../../models/friendrequest.model';
+import { Subject, Observable, interval, timer, Subscription } from 'rxjs';
+import { UserModel } from '../../../models/user.model';
+import { debounceTime, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { Location } from '@angular/common';
+import { timeout } from 'q';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +24,7 @@ export class AppHeaderComponent implements OnInit {
     private _authGuard: AuthGuard,
     private _authService: AuthService,
     private _errorMsgService: ErrorMessageService,
+    private _location: Location,
     private _tools: ToolsService,
     private _router: Router,
     private _userHttpService: UserHttpService,
@@ -36,9 +42,19 @@ export class AppHeaderComponent implements OnInit {
       this._getUserName();
       this._getListFriendRequest();
     }
+    this.searchResult = this.searchTerms.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap((keyword: string) => this._userHttpService.search(keyword))
+    );
+    this.searchResult.subscribe(res => {
+      this.searchUsers = res;
+    });
   }
 
   public isAuthenticated: boolean = this._authGuard.isAuthenticated();
+
+  private _reapeatSub: Subscription;
 
   public email: string;
   public password: string;
@@ -47,6 +63,14 @@ export class AppHeaderComponent implements OnInit {
 
   public isCollapsed = true;
   public friendRequestsInfo: FriendRequestInfo[] = [];
+
+
+  public isSearchCollapsed = true;
+  public keyword: string;
+  public searchTerms = new Subject<string>();
+  public searchResult: Observable<UserModel[]>;
+  public searchUsers: UserModel[] = [];
+
 
   public get authUser(): AuthUserInfo {
     return this._authGuard.getAuthenticatedUser();
@@ -69,9 +93,11 @@ export class AppHeaderComponent implements OnInit {
         else {
           localStorage.setItem("jwtToken", token);
           this.isAuthenticated = true;
+          this.isCollapsed = true;
           this._getUserName();
           this._setNullInput();
-          this._router.navigateByUrl("profile/" + this.authUser.userPath);
+          this._getListFriendRequest();
+          this._router.navigateByUrl("/home");
         }
       }, error => {
         this._errorMsgService.sendErrorMsg(error.error.message);
@@ -80,6 +106,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   public signOut() {
+    this._reapeatSub.unsubscribe();
     this._authService.signOut();
     this.isAuthenticated = false;
     this.userName = null;
@@ -98,6 +125,24 @@ export class AppHeaderComponent implements OnInit {
     this._confirmFriendRequest(friendRequest, false);
   }
 
+  public searchInputClick() {
+    if (this.isSearchCollapsed) this.search();
+    else this.isSearchCollapsed = true;
+  }
+
+  public search() {
+    if (this._tools.isNullOrEmpty(this.keyword)) this.isSearchCollapsed = true;
+    else {
+      var keyword = this._location.normalize(this.keyword);
+      this.searchTerms.next(keyword);
+      this.isSearchCollapsed = false;
+    };
+  }
+
+  public closeSearchBox() {
+    this.isSearchCollapsed = true;
+  }
+
   private _getUserName() {
     this._userHttpService.getUserName(this.authUser.userPath).subscribe(res => {
       this.userName = res;
@@ -109,35 +154,40 @@ export class AppHeaderComponent implements OnInit {
   private _setNullInput() {
     this.email = null;
     this.password = null;
+    this.keyword = null;
+    this.searchUsers = [];
   }
 
   private _getListFriendRequest() {
-    this.friendRequestsInfo = [];
-    this._friendHttpService.getListFriendRequest(this.authUser.userId).subscribe(res => {
-      var friendRequests: FriendRequestModel[] = res;
-      if(friendRequests.length > 0) {
-        friendRequests.forEach(x => {
-          this._userHttpService.getUserNameById(x.senderId).subscribe(res => {
-            var name = res;
-            this._userHttpService.getUserPath(x.senderId).subscribe(res => {
-              var path = res;
-              let requestInfo: FriendRequestInfo = {
-                friendRequest: x,
-                senderName: name,
-                senderPath: path
-              }
-              this.friendRequestsInfo.push(requestInfo);
+    this._reapeatSub = timer(0, 5000).subscribe(x => {
+      this._friendHttpService.getListFriendRequest(this.authUser.userId).subscribe(res => {
+        this.friendRequestsInfo = [];
+        var friendRequests: FriendRequestModel[] = res;
+        if (friendRequests.length > 0) {
+          friendRequests.forEach(x => {
+            this._userHttpService.getUserNameById(x.senderId).subscribe(res => {
+              var name = res;
+              this._userHttpService.getUserPath(x.senderId).subscribe(res => {
+                var path = res;
+                let requestInfo: FriendRequestInfo = {
+                  friendRequest: x,
+                  senderName: name,
+                  senderPath: path
+                }
+                this.friendRequestsInfo.push(requestInfo);
+              }, error => {
+                this._errorMsgService.sendErrorMsg(error.error.message);
+              });
             }, error => {
               this._errorMsgService.sendErrorMsg(error.error.message);
             });
-          }, error => {
-            this._errorMsgService.sendErrorMsg(error.error.message);
-          });
-        })
-      }
-    }, error => {
-      this._errorMsgService.sendErrorMsg(error.error.message);
+          })
+        }
+      }, error => {
+        this._errorMsgService.sendErrorMsg(error.error.message);
+      });
     });
+
   }
 
   private _confirmFriendRequest(friendRequest: FriendRequestModel, confirmed: boolean) {

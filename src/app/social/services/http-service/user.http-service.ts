@@ -34,6 +34,9 @@ export class UserHttpService extends BaseHttpService {
         return this.get(api_path + 'get-id/' + userPath).pipe(map(data => <string>data));
     }
 
+    public search(keyword: string) {
+        return this.get(api_path + 'search/' + keyword);
+    }
 
     public editUser(userEdit: UserModel) {
         let editRequest: EditUserRequestModel = {

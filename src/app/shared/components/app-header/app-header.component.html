@@ -3,51 +3,62 @@
     <div class="menu__web-title">
       <a href="/home" class="menu__home-link" title="Home">Social</a>
     </div>
-    <div *ngIf="!isAuthenticated" class="menu__form">
-      <div class="form-signin">
-        <div class="form-signin__email">
-          <span>Email</span>
-          <input type="email" class="form-control" [(ngModel)]="email" name="email">
+    <div class="menu__container">
+      <div *ngIf="!isAuthenticated" class="menu__form">
+        <div class="form-signin">
+          <div class="form-signin__email">
+            <span>Email</span>
+            <input type="email" class="form-control" [(ngModel)]="email" name="email">
+          </div>
+          <div class="form-signin__password">
+            <span>Password</span>
+            <input type="password" class="form-control" [(ngModel)]="password" name="password">
+          </div>
+          <button class="form-signin__signin-btn" type="submit" (click)="signIn()">Sign in</button>
         </div>
-        <div class="form-signin__password">
-          <span>Password</span>
-          <input type="password" class="form-control" [(ngModel)]="password" name="password">
+        <div class="form-signin__error-container">
+          <div class="error-list" *ngIf="validationErrors.length>0">
+            <p class="form-signin__error" *ngFor="let error of validationErrors">{{ error }}</p>
+          </div>
+          <p class="form-signin__error" *ngIf="invalidSignin">*Wrong Username or Password!</p>
         </div>
-        <button class="form-signin__signin-btn" type="submit" (click)="signIn()">Sign in</button>
       </div>
-      <div class="form-signin__error-container">
-        <div class="error-list" *ngIf="validationErrors.length>0">
-          <p class="form-signin__error" *ngFor="let error of validationErrors">{{ error }}</p>
-        </div>
-        <p class="form-signin__error" *ngIf="invalidSignin">*Wrong Username or Password!</p>
-      </div>
-    </div>
-    <div *ngIf="isAuthenticated" class="features">
-      <button class="features__btn btn btn-dark" (click)="routeProfile()">{{userName}}</button>
-      <div class="dropdown">
-        <button class="features__btn btn btn-dark dropdown-toggle" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
-          aria-controls="friendrequest-dropdown">
-          Friend requests {{friendRequestsInfo.length > 0 ? friendRequestsInfo.length: ""}}
-        </button>
-        <div class="dropdown-menu" id="friendrequest-dropdown" [ngbCollapse]="isCollapsed">
-          <div class="no-friendrequest-msg text-center" *ngIf="friendRequestsInfo.length == 0">No friend requests</div>
-          <div class="features__friend-request dropdown-item" *ngFor="let request of friendRequestsInfo">
-            <div class="request__name">
-              <a href="/profile/{{request.senderPath}}">{{request.senderName}}</a>
+      <div *ngIf="isAuthenticated" class="features">
+        <div class="features__search-box dropdown">
+          <input class="form-control search-input" [(ngModel)]="keyword" name="keyword" (keyup)="search()" (click)="searchInputClick()"
+            aria-controls="search-dropdown" [attr.aria-expanded]="!isCollapsed" type="text" autocomplete="off" placeholder="Search for user">
+          <div class="dropdown-menu" id="search-dropdown" [ngbCollapse]="isSearchCollapsed || searchUsers.length == 0">
+            <div class="search-result" *ngFor="let user of searchUsers">
+              <a class="user-link" href="/profile/{{user.path}}">{{user.name}}</a>
             </div>
-            <button class="request__btn btn btn-sm btn-primary" (click)="acceptFriendRequest(request.friendRequest)">
-              Accept
-            </button>
-            <button class="request__btn btn btn-sm btn-outline-primary" (click)="denyFriendRequest(request.friendRequest)">
-              Deny
-            </button>
           </div>
         </div>
+        <button class="features__btn btn btn-dark" (click)="routeProfile()">{{userName}}</button>
+        <div class="dropdown">
+          <button class="features__btn btn btn-dark dropdown-toggle" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+            aria-controls="friendrequest-dropdown">
+            Friend requests {{friendRequestsInfo.length > 0 ? friendRequestsInfo.length: ""}}
+          </button>
+          <div class="dropdown-menu" id="friendrequest-dropdown" [ngbCollapse]="isCollapsed">
+            <div class="no-friendrequest-msg text-center" *ngIf="friendRequestsInfo.length == 0">No friend requests</div>
+            <div class="features__friend-request dropdown-item" *ngFor="let request of friendRequestsInfo">
+              <div class="request__name">
+                <a href="/profile/{{request.senderPath}}">{{request.senderName}}</a>
+              </div>
+              <button class="request__btn btn btn-sm btn-primary" (click)="acceptFriendRequest(request.friendRequest)">
+                Accept
+              </button>
+              <button class="request__btn btn btn-sm btn-outline-primary" (click)="denyFriendRequest(request.friendRequest)">
+                Deny
+              </button>
+            </div>
+          </div>
+        </div>
+        <button class="features__btn btn btn-dark" routerLink="/settings">Settings</button>
+        <button class="features__btn btn btn-dark" (click)="signOut()">Sign out</button>
       </div>
-      <button class="features__btn btn btn-dark" routerLink="/settings">Settings</button>
-      <button class="features__btn btn btn-dark" (click)="signOut()">Sign out</button>
-      <div class="dropdown">
-        <button  type="button" class="features__btn btn btn-dark dropdown-toggle" data-toggle="dropdown" title="Help">?</button>
+      <div class="menu__help dropdown align-content-center">
+        <button type="button" class="features__btn btn btn-dark dropdown-toggle" data-toggle="dropdown" title="Help">?</button>
         <div class="dropdown-menu">
           <a class="dropdown-item" target="_blank" href="/privacy-policy">Privacy Policy</a>
         </div>

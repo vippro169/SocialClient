@@ -37,7 +37,7 @@ export class PostListComponent implements OnInit {
   }
 
   public post() {
-    this._postHttpService.createPost(this.userId, this.postContent, this.postPrivacy).subscribe(() => {
+    this._postHttpService.createPost(this.authUser.userId, this.postContent, this.postPrivacy).subscribe(() => {
       this.postContent = null;
       this.getPosts();
     }, error => {
