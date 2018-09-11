@@ -4,10 +4,10 @@
     <div class="comment__content">{{comment.content}}</div>
   </div>
   <div *ngIf="!isEditing" class="comment__options">
-      <div *ngIf="authId == comment.userId" class="dropdown">
+      <div *ngIf="authId == comment.userId || authId == postUserId" class="dropdown">
         <div class="dropdown-toggle" data-toggle="dropdown"></div>
         <div class="dropdown-menu">
-          <div class="dropdown-item" (click)="edit()">Edit</div>
+          <div *ngIf="authId == comment.userId" class="dropdown-item" (click)="edit()">Edit</div>
           <div class="dropdown-item" (click)="delete()">Delete</div>
         </div>
       </div>

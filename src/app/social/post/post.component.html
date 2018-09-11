@@ -34,6 +34,6 @@
   <div class="post__comments">
     <textarea autosize class="post__comment-input" (keydown.enter)="createComment();false" 
     placeholder=" Write your comment..." [(ngModel)]="commentContent"></textarea>
-    <app-comment *ngFor="let comment of comments" [comment]="comment" [authId]="authId" (commentChanged)="getComments($event)"></app-comment>
+    <app-comment *ngFor="let comment of comments" [comment]="comment" [postUserId]="post.userId" [authId]="authId" (commentChanged)="getComments($event)"></app-comment>
   </div>
 </div>

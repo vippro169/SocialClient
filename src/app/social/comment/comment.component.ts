@@ -23,6 +23,9 @@ export class CommentComponent implements OnInit {
   public comment: CommentModel;
 
   @Input()
+  public postUserId: string;
+
+  @Input()
   public authId: string;
 
   @Output()
