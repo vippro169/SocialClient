@@ -17,8 +17,16 @@
         &__container {
             display: flex;
         }
-        &__help {
+        &__privacy-policy {
             align-self: center;
+            a {
+                text-decoration: none;
+                color: white;
+                :visited {
+                    color: white;
+                }
+            }
+        
         }
         &__home-link {
             color: white;
@@ -95,7 +103,7 @@
     &__search-box {
         display: flex;
         flex-direction: column;
-        margin-right: 30px;
+        margin: 0 15px;
         .user-link {
             margin: 15px 10px;
         }

@@ -57,11 +57,10 @@
         <button class="features__btn btn btn-dark" routerLink="/settings">Settings</button>
         <button class="features__btn btn btn-dark" (click)="signOut()">Sign out</button>
       </div>
-      <div class="menu__help dropdown align-content-center">
-        <button type="button" class="features__btn btn btn-dark dropdown-toggle" data-toggle="dropdown" title="Help">?</button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" target="_blank" href="/privacy-policy">Privacy Policy</a>
-        </div>
+      <div class="menu__privacy-policy align-content-center">
+        <button type="button" class="features__btn btn btn-dark">
+          <a target="_blank" href="/privacy-policy">Privacy Policy</a>
+        </button>
       </div>
     </div>
   </div>
