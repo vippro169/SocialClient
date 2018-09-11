@@ -11,7 +11,6 @@ import { Subject, Observable, interval, timer, Subscription } from 'rxjs';
 import { UserModel } from '../../../models/user.model';
 import { debounceTime, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { Location } from '@angular/common';
-import { timeout } from 'q';
 
 @Component({
   selector: 'app-header',
@@ -110,7 +109,7 @@ export class AppHeaderComponent implements OnInit {
     this._authService.signOut();
     this.isAuthenticated = false;
     this.userName = null;
-    this._router.navigateByUrl('signup');
+    window.location.href = "/signup";
   }
 
   public routeProfile() {

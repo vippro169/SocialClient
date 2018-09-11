@@ -1,5 +1,9 @@
 <div class="signup-container text-center">
-  <form class="form-signup">
+  <div *ngIf="isSignUpSuccess" class="signup-success-msg">
+    <div>Sign up successful!</div>
+    <div>Please sign in with your Email and Password</div>
+  </div>
+  <form *ngIf="!isSignUpSuccess" class="form-signup">
     <h3 class="font-weight-bold">Create your account</h3>
     <div class="form-signup__input-fields">
       <input type="text" class="form-control form-signup__type-input" placeholder="Name" [(ngModel)]="name" name="name">
@@ -44,7 +48,8 @@
         <div class="error">{{pathError}}</div>
       </div>
       <div class="form-signup__policy-checkbox">
-        <input type="checkbox" [checked]="policyChecked" (change)="policyChecked = !policyChecked">I agree to this Privacy Policy.
+        <input type="checkbox" [checked]="policyChecked" (change)="policyChecked = !policyChecked">I agree to this 
+        <a target="_blank" href="/privacy-policy">Privacy Policy</a> .
       </div>
       <div class="signup-error-container justify-content-center">
         <div class="error">{{policyError}}</div>

@@ -43,6 +43,7 @@ export class SignUpComponent implements OnInit {
   public policyError: string;
   public error: string;
   
+  public isSignUpSuccess: boolean = false;
 
   ngOnInit() {
     this.yearMax = Number(formatDate(Date.now(), 'yyyy', 'en-US', '+7'));
@@ -72,6 +73,7 @@ export class SignUpComponent implements OnInit {
         .subscribe(res => {
           if (res != null) this.error = <string>res;
           this.isSigningUp = false;
+          this.isSignUpSuccess = true;
         }, error => {
           this._errorMsgService.sendErrorMsg(error.error.message);
           this.isSigningUp = false;
