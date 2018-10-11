@@ -42,7 +42,7 @@ export class SignUpComponent implements OnInit {
   public pathError: string;
   public policyError: string;
   public error: string;
-  
+
   public isSignUpSuccess: boolean = false;
 
   ngOnInit() {
@@ -68,12 +68,12 @@ export class SignUpComponent implements OnInit {
     this._setNullError();
     if (this._isSignUpValid()) {
       this.isSigningUp = true;
-      var birthday = new Date(+this.birthYear, +this.birthMonth-1, +this.birthDay+1);
+      var birthday = new Date(+this.birthYear, +this.birthMonth - 1, +this.birthDay + 1);
       this._authService.signUp(this.name, this.gender, birthday, this.email, this.password, this.path)
         .subscribe(res => {
           if (res != null) this.error = <string>res;
+          else this.isSignUpSuccess = true;
           this.isSigningUp = false;
-          this.isSignUpSuccess = true;
         }, error => {
           this._errorMsgService.sendErrorMsg(error.error.message);
           this.isSigningUp = false;
